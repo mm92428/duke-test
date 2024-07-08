@@ -1,0 +1,57 @@
+# Note: after setting this environment variable, DO NOT run docker compose up -d
+# without specifying the exact services that you want running in the background,
+# e.g. docker compose up server
+# e.g. docker compose run bundle install
+# e.g. docker compose run bundle exec rspec spec -f documentation
+# e.g. docker compose run rspec
+# e.g. docker compose run rails db:migrate
+name: homework
+services:
+  server:
+    build:
+      context: . # points to where code is
+    volumes:
+      - .:/opt/app-root/src
+    env_file:
+      - server.env
+    ports:
+      - 3000:3000
+    command:
+      - puma
+    stdin_open: true
+    tty: true    
+  rails:
+    image: homework-server
+    volumes:
+      - .:/opt/app-root/src
+    env_file:
+      - server.env
+    entrypoint:
+      - rails
+  bundle:
+    image: homework-server
+    volumes:
+      - .:/opt/app-root/src
+    entrypoint:
+      - bundle
+  rake:
+    image: homework-server
+    volumes:
+      - .:/opt/app-root/src
+    env_file:
+      - server.env
+    entrypoint:
+      - rake
+  rspec:
+    image: homework-server
+    environment:
+      - RAILS_ENV=test
+    volumes:
+      - .:/opt/app-root/src
+    env_file:
+      - server.env
+    entrypoint:
+      - rspec
+    tmpfs:
+      - /tmp
+

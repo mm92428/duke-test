@@ -1,0 +1,67 @@
+FORMAT: 1A
+HOST: http://localhost:3000/api/v1
+
+# Homework Service
+
+This is the documentation for the Homework Service API.
+
+API Errors
+----------------
+We should respond with context appropriate error codes, especially for 400 class errors, using the [Standard List](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+
+## Group Users
+Represents a user that can access the system.
+
+## Users collection [/users]
+
+## Create User [POST]
+Creates the User.
+
+>**Properties**
+- - - - -
++ **name (string)** - The full name of the user.
+
++ Request (application/json)
+
+        {
+            "name": "Jane Doe"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "id": "1"
+        }
+
+## Login [/users/login]
+
+## Login [POST]
+Allows a user to login and get a JWT
+
+>**Request Environment**
+- - - - -
++ **Authorization (string)** - The id of the user logging in
+
++ Response 201 (application/json)
+
+      {
+        "token": "JWT_TOKEN_STRING"
+      }
+
+## Current user [/users/current]
+
+## Current user [POST]
+Allows a user to get their user information
+
+>**Request Environment**
+- - - - -
++ **Authorization (string)** - the JWT returned in the token from login
+
++ Response 200 (application/json)
+
+      {"user":
+        {
+          "id": "1",
+          "name": "Jane Doe"
+        }
+      }
